@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
-import 'prismjs/components/prism-javascript'; 
+import 'prismjs/components/prism-javascript';
 import './code.css';
 
 const debounce = (func, delay) => {
@@ -30,6 +30,7 @@ const VsCode = () => {
     }
   }, 300);
 
+  
   useEffect(() => {
     highlightCode();
   }, [code,highlightCode]);
@@ -51,7 +52,6 @@ const VsCode = () => {
       ro.disconnect();
     };
   }, [highlightCode]);
-
   return (
     <div className="code-editor">
       <textarea

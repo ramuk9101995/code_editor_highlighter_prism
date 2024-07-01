@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Simple Code Editor</h1>
+        <h1 style={{textAlign:'center'}}>Code Editor</h1>
       </header>
       <VsCode />
     </div>
