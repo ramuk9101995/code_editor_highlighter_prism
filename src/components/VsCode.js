@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
 import 'prismjs/components/prism-javascript';
+import ResizeObserver from 'resize-observer-polyfill';
 import './code.css';
 
 const debounce = (func, delay) => {
@@ -24,34 +25,30 @@ const VsCode = () => {
     setCode(event.target.value);
   };
 
-  const highlightCode = debounce(() => {
+  const highlightCode = useCallback(debounce(() => {
     if (codeRef.current) {
       Prism.highlightElement(codeRef.current);
     }
-  }, 300);
+  }, 300), []);
 
-  
   useEffect(() => {
     highlightCode();
-  }, [code,highlightCode]);
+  }, [code, highlightCode]);
 
   useEffect(() => {
-    const ro = new ResizeObserver(() => {
-      highlightCode();
-    });
+    if (!codeRef.current) return;
 
-    if (codeRef.current) {
-      ro.observe(codeRef.current);
-    }
-    let o = codeRef.current
+    const ro = new ResizeObserver(debounce(() => {
+      highlightCode();
+    }, 300));
+
+    ro.observe(codeRef.current);
+
     return () => {
-      if (o) {
-        
-        ro.unobserve(o);
-      }
       ro.disconnect();
     };
   }, [highlightCode]);
+
   return (
     <div className="code-editor">
       <textarea
